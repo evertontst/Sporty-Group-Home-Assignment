@@ -12,6 +12,14 @@ export default defineNuxtConfig({
     '@pinia/nuxt'
   ],
 
+  image: {
+    domains: ['r2.thesportsdb.com'],
+    provider: 'ipx',
+    ipx: {
+      maxAge: 60 * 60 * 24 * 30, // Cache for 30 days
+    }
+  },
+
   css: ['~/assets/css/main.css'],
   
   runtimeConfig: {

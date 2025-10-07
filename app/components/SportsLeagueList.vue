@@ -3,6 +3,14 @@ import type { League } from '#shared/types/league'
 defineProps<{
   leagues: League[] | null
 }>()
+
+const emit = defineEmits<{
+  'league-click': [league: League]
+}>()
+
+const handleLeagueClick = (league: League) => {
+  emit('league-click', league)
+}
 </script>
 
 <template>
@@ -16,6 +24,7 @@ defineProps<{
         v-for="league in leagues"
         :key="league.idLeague"
         :league="league"
+        @click="handleLeagueClick"
       />
     </div>
   </div>
