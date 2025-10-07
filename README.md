@@ -1,6 +1,12 @@
-# Nuxt Minimal Starter
+## Environment Variables
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+Before running the project, create a `.env` file in the root directory with the following variables:
+
+```env
+NUXT_PUBLIC_ALL_LEAGUES_API=https://www.thesportsdb.com/api/v1/json/3/all_leagues.php
+NUXT_PUBLIC_BADGE_LOOKUP_API=https://www.thesportsdb.com/api/v1/json/3/search_all_seasons.php
+```
+These variables configure the API endpoints for fetching sports leagues data and badge lookups from TheSportsDB.
 
 ## Setup
 
@@ -19,57 +25,30 @@ yarn install
 # bun
 bun install
 ```
+## AI Tools Used
 
-## Development Server
+This project was developed with assistance from **Claude Code** (Anthropic's official CLI for Claude). Below is a summary of how it was used:
 
-Start the development server on `http://localhost:3000`:
+### Tools & Usage
 
-```bash
-# npm
-npm run dev
+- **Claude Code CLI**: Used throughout development for code generation, debugging, and implementation assistance
 
-# pnpm
-pnpm dev
+### How Claude Code Helped
 
-# yarn
-yarn dev
+1. **Project Setup & Configuration**
+   - Environment variable setup for API keys
+   - TypeScript configuration
 
-# bun
-bun run dev
-```
+2. **Feature Implementation**
+   - Component structure and composition
+   - Responsive UI layout implementation
 
-## Production
+3. **Code Quality & Debugging**
+   - Type error fixes and TypeScript improvements
 
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+4. **UI/UX Development**
+   - Component design and styling
+   - Tailwind utility class implementation
+   - Responsive design patterns
+   
+5. **Added Tests**
