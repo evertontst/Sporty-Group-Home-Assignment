@@ -1,39 +1,46 @@
 <script setup lang="ts">
 import type { League } from '#shared/types/league'
+
 const props = defineProps<{
   league: League | null
   isOpen: boolean
 }>()
+
 const emit = defineEmits<{
   close: []
 }>()
+
 // Get the season data directly from Nuxt cache based on current league
 const currentSeason = computed(() => {
   if (!props.league?.idLeague) return null
   const cachedData = useNuxtData(`badge-${props.league.idLeague}`)
   return cachedData.data.value
 })
-const isLoading = ref(false)
-const fetchError = ref<any>(null)
+
+const isLoading = shallowRef <boolean>(false)
+const fetchError = shallowRef<Error | null>(null)
+
 // Fetch data for the current league if not cached
 const fetchSeasonData = async (leagueId: string) => {
   const cachedData = useNuxtData(`badge-${leagueId}`)
+
   // If already cached, no need to fetch
   if (cachedData.data.value) {
     return
   }
+
   isLoading.value = true
   fetchError.value = null
+
   try {
-    const tempId = ref(leagueId)
-    const { execute } = useSeasonBadge(tempId)
-    await execute()
+    await useSeasonBadge(leagueId)
   } catch (err) {
-    fetchError.value = err
+    fetchError.value = err as Error
   } finally {
     isLoading.value = false
   }
 }
+
 // Watch for modal open and league changes
 watch(
   () => ({ id: props.league?.idLeague, isOpen: props.isOpen }),
@@ -44,42 +51,52 @@ watch(
   },
   { immediate: true }
 )
-const imageLoading = ref(false)
-const showLoader = ref(false)
+
+const imageLoading = shallowRef(false)
+const showLoader = shallowRef(false)
+
 watch(() => currentSeason.value?.strBadge, () => {
   imageLoading.value = true
+
   if (imageLoading.value) {
     showLoader.value = true
   }
 })
+
 const handleImageLoad = () => {
   imageLoading.value = false
   showLoader.value = false
 }
+
 const handleImageError = () => {
   imageLoading.value = false
   showLoader.value = false
 }
+
 const handleClose = () => {
   emit('close')
 }
+
 const handleBackdropClick = (event: MouseEvent) => {
   if (event.target === event.currentTarget) {
     handleClose()
   }
 }
-// Prevent background scrolling when modal is open
-watch(() => props.isOpen, (isOpen) => {
-  if (isOpen) {
-    document.body.style.overflow = 'hidden'
-  } else {
-    document.body.style.overflow = ''
+
+// Handle Escape key to close modal using VueUse
+onKeyStroke('Escape', () => {
+  if (props.isOpen) {
+    handleClose()
   }
 })
-// Cleanup on unmount
-onUnmounted(() => {
-  document.body.style.overflow = ''
-})
+
+// Prevent background scrolling
+if (import.meta.client) {
+  const isLocked = useScrollLock(document.body)
+  watch(() => props.isOpen, (isOpen) => {
+    isLocked.value = isOpen
+  })
+}
 </script>
 
 <template>
@@ -189,14 +206,17 @@ onUnmounted(() => {
 .modal-leave-active {
   transition: opacity 0.3s ease;
 }
+
 .modal-enter-from,
 .modal-leave-to {
   opacity: 0;
 }
+
 .modal-enter-active .bg-white,
 .modal-leave-active .bg-white {
   transition: transform 0.3s ease;
 }
+
 .modal-enter-from .bg-white,
 .modal-leave-to .bg-white {
   transform: scale(0.9);

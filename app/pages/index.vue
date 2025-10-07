@@ -9,7 +9,7 @@ const filteredLeagues = computed(() => {
 })
 
 // Modal state
-const isModalOpen = shallowRef(false)
+const isModalOpen = shallowRef<boolean>(false)
 const selectedLeague = shallowRef<League | null>(null)
 const openModal = (league: League) => {
   selectedLeague.value = league
