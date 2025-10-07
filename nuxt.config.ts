@@ -12,6 +12,8 @@ export default defineNuxtConfig({
     '@pinia/nuxt'
   ],
 
+  css: ['~/assets/css/main.css'],
+  
   runtimeConfig: {
     public: {
       allLeaguesApi: process.env.NUXT_PUBLIC_ALL_LEAGUES_API || 'https://www.thesportsdb.com/api/v1/json/3/all_leagues.php',
